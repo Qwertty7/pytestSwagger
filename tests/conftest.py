@@ -1,5 +1,8 @@
 import pytest
+import requests
 from faker import Faker
+
+from src.login import APIService
 
 
 @pytest.fixture
@@ -18,3 +21,35 @@ def candidate_data ():
 
     }
     return candidate_data
+
+
+# @pytest.fixture
+# def url_positions():
+#     BASE_URL = 'https://recruit-portnov.herokuapp.com/recruit/api/v1'
+#     return BASE_URL + '/positions'
+
+
+@pytest.fixture
+def session():
+    return requests.Session()
+# this is not auth session
+
+
+@pytest.fixture
+def auth_session(session):
+    service = APIService()
+    token = service.login('student@example.com', 'welcome')
+    session.headers.update({'Authorization': f'Bearer {token}'})
+    return session
+
+
+@pytest.yield_fixture
+def candidate(auth_session, candidate_data):
+    BASE_URL = 'https://recruit-portnov.herokuapp.com/recruit/api/v1'
+    url = BASE_URL + '/candidates'
+    response = auth_session.post(url, json=candidate_data)
+    json_data = response.json()
+    yield json_data
+    candidate_id = json_data['id']
+    auth_session.delete(f'{url}/{candidate_id}')
+
