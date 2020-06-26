@@ -49,7 +49,7 @@ def candidate(auth_session, candidate_data):
     url = BASE_URL + '/candidates'
     response = auth_session.post(url, json=candidate_data)
     json_data = response.json()
-    yield json_data
     candidate_id = json_data['id']
+    yield json_data
     auth_session.delete(f'{url}/{candidate_id}')
 

@@ -26,6 +26,7 @@ class APIService:
         if 'authenticated' in json_data and json_data['authenticated']:
             token = json_data['token']
             self.session.headers.update({'Authorization': f'Bearer {token}'})
+            return token
         elif 'errorMessage' in json_data:
             raise APIError(json_data['errorMessage'])
         else:
