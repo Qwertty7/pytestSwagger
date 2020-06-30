@@ -22,13 +22,6 @@ def candidate_data ():
     }
     return candidate_data
 
-
-# @pytest.fixture
-# def url_positions():
-#     BASE_URL = 'https://recruit-portnov.herokuapp.com/recruit/api/v1'
-#     return BASE_URL + '/positions'
-
-
 @pytest.fixture
 def session():
     return requests.Session()
