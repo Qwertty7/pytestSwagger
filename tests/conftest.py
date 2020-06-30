@@ -30,10 +30,8 @@ def session():
 
 @pytest.fixture
 def auth_session(session):
-    service = APIService()
-    token = service.login('student@example.com', 'welcome')
-    session.headers.update({'Authorization': f'Bearer {token}'})
-    return session
+    service = APIService('student@example.com', 'welcome')
+    return service.session
 
 
 @pytest.yield_fixture
